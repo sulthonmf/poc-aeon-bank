@@ -45,3 +45,9 @@ yarn-error.*
 AGENTS.md
 CLAUDE.md
 
+# Local documentation & scripts
+DOCUMENTATION.md
+generate_pdf.py
+*.pdf
+
+

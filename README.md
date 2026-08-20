@@ -17,6 +17,22 @@ A React Native mobile application built for AEON Bank's Mobile Engineer Assessme
 
 ---
 
+## 📱 Application Screenshots
+
+### 🍏 iOS Screenshots
+
+| Transaction List | Transaction Details | Native Share Receipt |
+| :---: | :---: | :---: |
+| <img src="screenshots/iOS-List_Transaction.png" width="240" /> | <img src="screenshots/iOS-Detail_Transaction.png" width="240" /> | <img src="screenshots/iOS-Share.png" width="240" /> |
+
+### 🤖 Android Screenshots
+
+| Transaction List | Transaction Details | Native Share Receipt |
+| :---: | :---: | :---: |
+| <img src="screenshots/Android-List_Transaction.png" width="240" /> | <img src="screenshots/Android-Detail_Transaction.png" width="240" /> | <img src="screenshots/Android-Share.png" width="240" /> |
+
+---
+
 ## 🛠 Tech Stack
 
 - **Framework**: React Native (Expo SDK 57)

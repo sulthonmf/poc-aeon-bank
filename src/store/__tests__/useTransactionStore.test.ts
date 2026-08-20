@@ -1,4 +1,4 @@
-import { useTransactionStore } from '../useTransactionStore';
+import { useTransactionStore, getGroupedTransactions } from '../useTransactionStore';
 
 describe('Zustand useTransactionStore tests', () => {
   beforeEach(() => {
@@ -52,5 +52,19 @@ describe('Zustand useTransactionStore tests', () => {
     expect(useTransactionStore.getState().language).toBe('ms');
     toggleLanguage();
     expect(useTransactionStore.getState().language).toBe('en');
+  });
+
+  it('should group transactions by month correctly', async () => {
+    const { fetchTransactions } = useTransactionStore.getState();
+    await fetchTransactions();
+
+    const state = useTransactionStore.getState();
+    const groups = getGroupedTransactions(state.transactions, state.searchQuery, state.filterType);
+    
+    expect(groups.length).toBeGreaterThan(0);
+    expect(groups[0]).toHaveProperty('title'); // e.g. "October 2024"
+    expect(groups[0]).toHaveProperty('dateKey'); // e.g. "2024-10"
+    expect(Array.isArray(groups[0].data)).toBe(true);
+    expect(groups[0].title).toContain('2024');
   });
 });

@@ -43,3 +43,40 @@ export const formatDate = (isoDateString: string): string => {
     return isoDateString;
   }
 };
+
+/**
+ * Formats ISO date string to Month & Year Header (e.g. "October 2024").
+ */
+export const formatMonthHeader = (isoDateString: string): string => {
+  try {
+    const date = new Date(isoDateString);
+    if (isNaN(date.getTime())) return isoDateString;
+
+    const monthNames = [
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+    const month = monthNames[date.getMonth()];
+    const year = date.getFullYear();
+
+    return `${month} ${year}`;
+  } catch (error) {
+    return isoDateString;
+  }
+};
+
+/**
+ * Formats ISO date string to time only (e.g. "12:34").
+ */
+export const formatTimeOnly = (isoDateString: string): string => {
+  try {
+    const date = new Date(isoDateString);
+    if (isNaN(date.getTime())) return isoDateString;
+
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
+  } catch (error) {
+    return isoDateString;
+  }
+};

@@ -3,7 +3,7 @@ import {
   SafeAreaView,
   View,
   Text,
-  FlatList,
+  SectionList,
   ActivityIndicator,
   RefreshControl,
   StyleSheet,
@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList, Transaction } from '../types/transaction';
-import { useTransactionStore, useFilteredTransactions } from '../store/useTransactionStore';
+import { useTransactionStore, useGroupedTransactions } from '../store/useTransactionStore';
 import { getTranslation } from '../utils/i18n';
 import { SearchBar } from '../components/SearchBar';
 import { FilterChips } from '../components/FilterChips';
@@ -24,7 +24,7 @@ export const HomeScreen: React.FC<Props> = ({ navigation }) => {
   const isLoading = useTransactionStore((state) => state.isLoading);
   const fetchTransactions = useTransactionStore((state) => state.fetchTransactions);
   const language = useTransactionStore((state) => state.language);
-  const filteredTransactions = useFilteredTransactions();
+  const groupedTransactions = useGroupedTransactions();
   const t = getTranslation(language);
 
   useEffect(() => {
@@ -55,20 +55,26 @@ export const HomeScreen: React.FC<Props> = ({ navigation }) => {
       <FilterChips />
 
       {/* Content Section */}
-      {isLoading && filteredTransactions.length === 0 ? (
+      {isLoading && groupedTransactions.length === 0 ? (
         <View style={styles.centerContainer}>
           <ActivityIndicator size="large" color="#0F172A" />
           <Text style={styles.loadingText}>{t.loadingText}</Text>
         </View>
       ) : (
-        <FlatList
-          data={filteredTransactions}
+        <SectionList
+          sections={groupedTransactions}
           keyExtractor={(item) => item.refId}
           renderItem={({ item }) => (
             <TransactionItem transaction={item} onPress={handleSelectItem} />
           )}
+          renderSectionHeader={({ section: { title } }) => (
+            <View style={styles.sectionHeaderContainer}>
+              <Text style={styles.sectionHeaderTitle}>{title}</Text>
+            </View>
+          )}
+          stickySectionHeadersEnabled={false}
           contentContainerStyle={
-            filteredTransactions.length === 0 ? styles.emptyListContainer : styles.listContent
+            groupedTransactions.length === 0 ? styles.emptyListContainer : styles.listContent
           }
           refreshControl={
             <RefreshControl
@@ -121,7 +127,20 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   listContent: {
-    paddingVertical: 8,
+    paddingBottom: 16,
+  },
+  sectionHeaderContainer: {
+    paddingHorizontal: 16,
+    paddingTop: 14,
+    paddingBottom: 6,
+    backgroundColor: '#F8FAFC',
+  },
+  sectionHeaderTitle: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: '#64748B',
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
   },
   emptyListContainer: {
     flexGrow: 1,
